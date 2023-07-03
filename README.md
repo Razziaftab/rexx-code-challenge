@@ -14,7 +14,7 @@ Below are versions I have used to complete this Task.
 
 ## Installation & Setup
 ```
-cd code-challenge
+cd rexx-code-challenge
 composer install
 composer dump-autoload
 
