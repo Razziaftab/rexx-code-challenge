@@ -1,39 +1,3 @@
-<?php
-
-require_once "DatabaseConnection.php";
-
-$db = Database::getInstance();
-$pdo = $db->getConnection();
-
-$searchQuery = "SELECT * FROM sales_data ";
-
-$conditions=array();
-if(!empty($_GET["customer_name"]))
-{
-    $customerName = $_GET['customer_name'];
-    $conditions[]= " customer_name LIKE '%$customerName%'";
-}
-if(!empty($_GET["product_name"]))
-{
-    $productName = $_GET['product_name'];
-    $conditions[]= "product_name LIKE '%$productName%'";
-}
-if(!empty($_GET["product_price"]))
-{
-    $productPrice = $_GET['product_price'];
-    $conditions[]= "product_price LIKE '%$productPrice%'";
-}
-
-if ($conditions)
-{
-    $searchQuery .= " WHERE ".implode(" AND ", $conditions);
-}
-
-$stmt = $pdo->prepare($searchQuery);
-$stmt->execute();
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,27 +43,27 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo('<th>Sale Date</th></tr>');
         echo('</thead>');
 
-        if (!empty($rows)) {
+        if (!empty($sales)) {
             $totalFees=0;
-            foreach ($rows as $row) {
+            foreach ($sales as $sale) {
 
                 echo "<tr><td>";
-                echo(htmlentities($row['sale_id']));
+                echo(htmlentities($sale['sale_id']));
                 echo("</td><td>");
-                echo(htmlentities($row['customer_name']));
+                echo(htmlentities($sale['customer_name']));
                 echo("</td><td>");
-                echo(htmlentities($row['customer_mail']));
+                echo(htmlentities($sale['customer_mail']));
                 echo("</td><td>");
-                echo(htmlentities($row['product_id']));
+                echo(htmlentities($sale['product_id']));
                 echo("</td><td>");
-                echo(htmlentities($row['product_name']));
+                echo(htmlentities($sale['product_name']));
                 echo("</td><td>");
-                echo(htmlentities($row['product_price']));
+                echo(htmlentities($sale['product_price']));
                 echo("</td><td>");
-                echo(htmlentities($row['sale_date']));
+                echo(htmlentities($sale['sale_date']));
                 echo("</td>");
                 echo("</tr>");
-                $totalFees += $row['product_price'];
+                $totalFees += $sale['product_price'];
 
             }
             echo("<tr><td colspan='5'> <b>Total Product Price </b></td>");

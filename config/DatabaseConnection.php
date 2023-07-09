@@ -1,20 +1,31 @@
 <?php
 
-class Database
+namespace config;
+
+require_once 'config/config.php';
+
+use Exception;
+use PDO;
+use PDOException;
+
+class DatabaseConnection
 {
     private static $instance;
     private $connection;
 
+    /**
+     * @throws Exception
+     */
     private function __construct()
     {
-        // Private constructor to prevent instantiation from outside
-        $host = "localhost";
-        $username = "root";
-        $password = "123";
-        $database = "rexx_systems";
+        $driver = DB_DRIVER;
+        $host = DB_HOST;
+        $username = DB_USER;
+        $password = DB_PASS;
+        $database = DB_DATABASE;
 
         // Create a secure connection using PDO
-        $dsn = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+        $dsn = "$driver:host=$host;dbname=$database;charset=utf8mb4";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES => false,
@@ -28,10 +39,10 @@ class Database
         }
     }
 
-    public static function getInstance(): Database
+    public static function getInstance(): DatabaseConnection
     {
         if (!self::$instance) {
-            self::$instance = new Database();
+            self::$instance = new DatabaseConnection();
         }
 
         return self::$instance;
@@ -42,4 +53,3 @@ class Database
         return $this->connection;
     }
 }
-

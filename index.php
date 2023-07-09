@@ -1,40 +1,22 @@
 <?php
 
-require_once "ParseJson.php";
-require_once "DatabaseConnection.php";
+require_once 'vendor/autoload.php';
+require_once 'config/DatabaseConnection.php';
 
-$salesData = ParseJson::ParseJsonFile();
+use App\Controllers\SaleController;
+use config\DatabaseConnection;
 
-$db = Database::getInstance();
-$pdo = $db->getConnection();
-
-$dataInsertion = "INSERT INTO sales_data (sale_id, customer_name, customer_mail, product_id, product_name, product_price,
-                  sale_date) VALUES(?, ?, ?, ?, ?, ?, ?)";
-$stmt = $pdo->prepare($dataInsertion);
-$pdo->beginTransaction();
-
+$sale = new SaleController(DatabaseConnection::getInstance());
 try {
-    if (iterator_count($salesData) > 0) {
-        foreach ($salesData as $key => $saleData) {
-            $stmt->execute([
-                $saleData->sale_id,
-                $saleData->customer_name,
-                $saleData->customer_mail,
-                $saleData->product_id,
-                $saleData->product_name,
-                $saleData->product_price,
-                $saleData->sale_date,
-            ]);
-
-        }
+    $saleCreate = $sale->create();
+    if ($saleCreate) {
+        echo "Data Inserted successfully.";
+    } else {
+        echo "Something went wrong!";
     }
-    $pdo->commit();
-    echo 'Data Insert successfully. </br>';
-    echo '<a href="view.php">View Data</a>';
-} catch (PDOException $e) {
-    // Rollback the transaction if any query fails
-    $pdo->rollback();
-    echo 'Error: ' . $e->getMessage();
+} catch (Exception $e) {
+    echo $e->getMessage();
     die();
 }
-?>
+
+echo '<br><a href="sale_view.php">View Data</a>';

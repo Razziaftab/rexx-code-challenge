@@ -14,18 +14,19 @@ Below are versions I have used to complete this Task.
 
 ## Installation & Setup
 ```
-cd code-challenge
+git clone https://github.com/Razziaftab/rexx-code-challenge.git
+cd rexx-code-challenge
 composer install
 composer dump-autoload
 
-- Change the database host, username, password and name according to your system in "DatabaseConnection.php" file.
+- Change the database driver, host, username, password and name according to your system in "config.php" file.
 ```
 
 ## Run the Tasks
 
 `Run index.php file`
 
-- Then you see the message "Data Insert successfully".
+- Then you see the message "Data Inserted successfully".
 - You also see the link to view the data. When you click on that new page will be open with data and filters.
 - You can now search data using that filters.
 
@@ -39,7 +40,6 @@ In this project I tried to solve this challenge by optimize way by using JSON pa
 
 This challenge will more be optimized like this:
 
-- **Data save in different tables Like I tried in "DataForMultipleTables.php".**
-- **If JSON data having "customer_id" it will be easy to store data in optimize way.**
-- **We can also apply the pagination on view page if data will be large overtime.**
+- **I can also apply the pagination on view page if data will be large overtime.**
+- **View Layer will be implemented in more proper way.**
 - **Use the proper structure using classes and directories.**
